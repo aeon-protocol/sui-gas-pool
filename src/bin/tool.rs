@@ -1,12 +1,31 @@
 // Copyright (c) Mysten Labs, Inc.
 // SPDX-License-Identifier: Apache-2.0
+extern crate dwallet_config as sui_config;
+extern crate dwallet_json as sui_json;
+extern crate dwallet_json_rpc as sui_json_rpc;
+extern crate dwallet_json_rpc_types as sui_json_rpc_types;
+extern crate dwallet_metrics as mysten_metrics;
+extern crate dwallet_move_core_types as move_core_types;
+extern crate dwallet_open_rpc as sui_open_rpc;
+extern crate dwallet_package_resolver as sui_package_resolver;
+extern crate dwallet_protocol_config as sui_protocol_config;
+extern crate dwallet_rest_api as sui_rest_api;
+extern crate dwallet_sdk as sui_sdk;
+extern crate dwallet_telemetry_subscribers as telemetry_subscribers;
+extern crate dwallet_transaction_builder as sui_transaction_builder;
+extern crate dwallet_types as sui_types;
 
 use clap::*;
+use dwallet_gas_station::benchmarks::BenchmarkMode;
+use dwallet_gas_station::config::{GasPoolStorageConfig, GasStationConfig, TxSignerConfig};
+use dwallet_gas_station::rpc::client::GasPoolRpcClient;
+use dwallet_gas_station::rpc::rpc_types::{
+    ExecuteTxRequest, ExecuteTxResponse, ReserveGasRequest, ReserveGasResponse,
+};
+
+use schemars::schema_for;
 use std::path::PathBuf;
 use sui_config::Config;
-use sui_gas_station::benchmarks::BenchmarkMode;
-use sui_gas_station::config::{GasPoolStorageConfig, GasStationConfig, TxSignerConfig};
-use sui_gas_station::rpc::client::GasPoolRpcClient;
 use sui_types::crypto::get_account_key_pair;
 
 #[derive(Parser)]
@@ -68,6 +87,10 @@ pub enum CliCommand {
     GetStationVersion {
         #[clap(long, help = "Full URL of the station RPC server")]
         station_rpc_url: String,
+    },
+    GenerateSchemas {
+        #[clap(long, help = "Output folder for generates json")]
+        path: String,
     },
 }
 
@@ -132,6 +155,29 @@ impl ToolCommand {
                     let station_client = GasPoolRpcClient::new(station_rpc_url);
                     let version = station_client.version().await.unwrap();
                     println!("Station server version: {}", version);
+                }
+                CliCommand::GenerateSchemas { path } => {
+                    let schemas = vec![
+                        (schema_for!(ExecuteTxRequest), "ExecuteTxRequest"),
+                        (schema_for!(ExecuteTxResponse), "ExecuteTxResponse"),
+                        (schema_for!(ReserveGasRequest), "ReserveGasRequest"),
+                        (schema_for!(ReserveGasResponse), "ReserveGasResponse"),
+                    ];
+                    // Iterate through the schemas and write each to a separate file
+                    for (schema, name) in schemas {
+                        // Convert the schema to a pretty JSON string
+                        let schema_string = serde_json::to_string_pretty(&schema).unwrap();
+
+                        // Define the file path using the provided path and struct name
+                        let file_path = format!("{}/{}.json", path, name);
+
+                        // Create and write to the file
+                        use std::fs::File;
+                        use std::io::Write;
+                        let mut file = File::create(&file_path).expect("Failed to create file");
+                        file.write_all(schema_string.as_bytes())
+                            .expect("Failed to write to file");
+                    }
                 }
             },
         }

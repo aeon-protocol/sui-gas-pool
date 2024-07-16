@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 pub mod client;
-mod rpc_types;
+pub mod rpc_types;
 mod server;
 
 pub use server::GasPoolServer;
