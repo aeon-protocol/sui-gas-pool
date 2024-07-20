@@ -1,7 +1,7 @@
 ---
 signer-config:
   local:
-    keypair:  AAnBBjwXtf3NaEpCNbpQrclxTitvI2P0e9XbZh0EmLgv
+    keypair:  AHtlvODMiBZ/bls/mr6xjVKQ5eszvEdpOcWAuhnBt2Kg
 rpc-host-ip: 0.0.0.0
 rpc-port: 9601
 metrics-port: 9187

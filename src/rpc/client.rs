@@ -10,7 +10,7 @@ use anyhow::bail;
 use fastcrypto::encoding::Base64;
 use reqwest::header::{HeaderMap, AUTHORIZATION};
 use reqwest::Client;
-use sui_json_rpc_types::SuiTransactionBlockEffects;
+use sui_json_rpc_types::{SuiTransactionBlockEffects, SuiTransactionBlockResponse};
 use sui_types::base_types::{ObjectRef, SuiAddress};
 use sui_types::signature::GenericSignature;
 use sui_types::transaction::TransactionData;
@@ -127,7 +127,7 @@ impl GasPoolRpcClient {
         reservation_id: ReservationID,
         tx_data: &TransactionData,
         user_sig: &GenericSignature,
-    ) -> anyhow::Result<SuiTransactionBlockEffects> {
+    ) -> anyhow::Result<SuiTransactionBlockResponse> {
         let mut headers = HeaderMap::new();
         headers.insert(
             AUTHORIZATION,
@@ -147,13 +147,11 @@ impl GasPoolRpcClient {
             .await?
             .json::<ExecuteTxResponse>()
             .await?;
-        response
-            .response
-            .ok_or_else(|| {
-                anyhow::anyhow!(response
-                    .error
-                    .unwrap_or_else(|| "Unknown error".to_string()))
-            })
-            .and_then(|r| r.effects.ok_or_else(|| anyhow::anyhow!("No effects")))
+        response.response.ok_or_else(|| {
+            anyhow::anyhow!(response
+                .error
+                .unwrap_or_else(|| "Unknown error".to_string()))
+        })
+        // .and_then(|r| r.effects.ok_or_else(|| anyhow::anyhow!("No effects")))
     }
 }

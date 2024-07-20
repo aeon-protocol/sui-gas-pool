@@ -7,7 +7,7 @@
 
 local sponsor_address = ARGV[1]
 
-local t_expiration_queue = sponsor_address .. ':expiration_queue'
+local t_expiration_queue = sponsor_address .. ':dwallet:expiration_queue'
 
 local elements = redis.call('ZRANGE', t_expiration_queue, 0, -1)
 

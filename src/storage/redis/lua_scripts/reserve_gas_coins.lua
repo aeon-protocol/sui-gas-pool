@@ -17,9 +17,9 @@ local expiration_time = tonumber(ARGV[3])
 
 local MAX_GAS_PER_QUERY = 256
 
-local t_available_gas_coins = sponsor_address .. ':available_gas_coins'
-local t_expiration_queue = sponsor_address .. ':expiration_queue'
-local t_next_reservation_id = sponsor_address .. ':next_reservation_id'
+local t_available_gas_coins = sponsor_address .. ':dwallet:available_gas_coins'
+local t_expiration_queue = sponsor_address .. ':dwallet:expiration_queue'
+local t_next_reservation_id = sponsor_address .. ':dwallet:next_reservation_id'
 
 local total_balance = 0
 local coins = {}
@@ -48,13 +48,13 @@ if total_balance < target_budget then
     return {0, {}, 0, 0}
 end
 
-local t_available_coin_total_balance = sponsor_address .. ':available_coin_total_balance'
+local t_available_coin_total_balance = sponsor_address .. ':dwallet:available_coin_total_balance'
 -- TODO: For some reason DECRBY is not working, so we have to do this in two steps.
 local cur_coin_total_balance = redis.call('GET', t_available_coin_total_balance)
 local new_total_balance = cur_coin_total_balance - total_balance
 redis.call('SET', t_available_coin_total_balance, new_total_balance)
 
-local t_available_coin_count = sponsor_address .. ':available_coin_count'
+local t_available_coin_count = sponsor_address .. ':dwallet:available_coin_count'
 local cur_coin_count = redis.call('GET', t_available_coin_count)
 local new_coin_count = cur_coin_count - #coins
 redis.call('SET', t_available_coin_count, new_coin_count)

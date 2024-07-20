@@ -6,6 +6,8 @@ use dwallet_gas_station::command::Command;
 
 #[tokio::main]
 async fn main() {
+    print!("hi");
+
     let command = Command::parse();
     command.execute().await;
 }

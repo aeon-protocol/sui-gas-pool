@@ -11,6 +11,7 @@ pub use server::GasPoolServer;
 mod tests {
     use crate::test_env::{create_test_transaction, start_rpc_server_for_testing};
     use crate::AUTH_ENV_NAME;
+    use anyhow::Context;
     use sui_json_rpc_types::SuiTransactionBlockEffectsAPI;
     use sui_types::gas_coin::MIST_PER_SUI;
 
@@ -33,7 +34,12 @@ mod tests {
             .execute_tx(reservation_id, &tx_data, &user_sig)
             .await
             .unwrap();
-        assert!(effects.status().is_ok());
+        assert!(effects
+            .effects
+            .context("should contain effects")
+            .expect("should contain effects")
+            .status()
+            .is_ok());
     }
 
     #[tokio::test]

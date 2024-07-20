@@ -9,7 +9,7 @@
 local sponsor_address = ARGV[1]
 local current_time = tonumber(ARGV[2])
 
-local t_expiration_queue = sponsor_address .. ':expiration_queue'
+local t_expiration_queue = sponsor_address .. ':dwallet:expiration_queue'
 
 local elements = redis.call('ZRANGEBYSCORE', t_expiration_queue, 0, current_time)
 

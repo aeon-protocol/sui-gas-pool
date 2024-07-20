@@ -6,7 +6,7 @@
 
 local sponsor_address = ARGV[1]
 
-local t_available_coin_total_balance = sponsor_address .. ':available_coin_total_balance'
+local t_available_coin_total_balance = sponsor_address .. ':dwallet:available_coin_total_balance'
 local total_balance = redis.call('GET', t_available_coin_total_balance)
 
 return total_balance

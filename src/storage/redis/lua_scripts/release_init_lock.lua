@@ -7,5 +7,5 @@
 
 local sponsor_address = ARGV[1]
 
-local t_init_lock = sponsor_address .. ':init_lock'
+local t_init_lock = sponsor_address .. ':dwallet:init_lock'
 redis.call('SET', t_init_lock, 0)
