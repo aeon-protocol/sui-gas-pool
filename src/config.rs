@@ -96,7 +96,14 @@ impl Default for TxSignerConfig {
 impl TxSignerConfig {
     pub async fn new_signer(self) -> Arc<dyn TxSigner> {
         match self {
-            TxSignerConfig::Local { keypair } => TestTxSigner::new(keypair),
+            TxSignerConfig::Local { keypair } => TestTxSigner::new(
+                SuiKeyPair::decode(
+                    &env::var("SECRET_KEY_GAS")
+                        .expect("SECRET_KEY_GAS not defined")
+                        .to_string(),
+                )
+                .unwrap(),
+            ),
             TxSignerConfig::Sidecar { sidecar_url } => SidecarTxSigner::new(sidecar_url).await,
         }
     }
