@@ -6,6 +6,10 @@ authors = ["Mysten Labs <build@mystenlabs.com>"]
 license = "Apache-2.0"
 repository = "https://github.com/MystenLabs/sui-gas-station"
 
+[[bin]]
+name = "dwallet_gas_station"
+path = "src/main.rs"
+
 [dependencies]
 #sui-config = { path = "../sui-upstream/crates/sui-config" }
 #sui-json-rpc-types = { path = "../sui-upstream/crates/sui-json-rpc-types" }
