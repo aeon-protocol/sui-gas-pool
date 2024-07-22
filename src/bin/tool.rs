@@ -16,10 +16,10 @@ extern crate dwallet_transaction_builder as sui_transaction_builder;
 extern crate dwallet_types as sui_types;
 
 use clap::*;
-use dwallet_gas_station::benchmarks::BenchmarkMode;
-use dwallet_gas_station::config::{GasPoolStorageConfig, GasStationConfig, TxSignerConfig};
-use dwallet_gas_station::rpc::client::GasPoolRpcClient;
-use dwallet_gas_station::rpc::rpc_types::{
+use dwallet_gas_pool::benchmarks::BenchmarkMode;
+use dwallet_gas_pool::config::{GasPoolStorageConfig, GasStationConfig, TxSignerConfig};
+use dwallet_gas_pool::rpc::client::GasPoolRpcClient;
+use dwallet_gas_pool::rpc::rpc_types::{
     ExecuteTxRequest, ExecuteTxResponse, ReserveGasRequest, ReserveGasResponse,
 };
 
