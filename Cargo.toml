@@ -1,5 +1,5 @@
 [package]
-name = "dwallet-gas-station"
+name = "dwallet-gas-pool"
 version = "0.4.0"
 edition = "2021"
 authors = ["Mysten Labs <build@mystenlabs.com>"]
@@ -7,7 +7,7 @@ license = "Apache-2.0"
 repository = "https://github.com/MystenLabs/sui-gas-station"
 
 [[bin]]
-name = "dwallet_gas_station"
+name = "dwallet_gas_pool"
 path = "src/main.rs"
 
 [dependencies]
