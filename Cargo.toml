@@ -22,26 +22,26 @@ path = "src/main.rs"
 #typed-store = { path = "../sui-upstream/crates/typed-store" }
 #typed-store-derive = { path = "../sui-upstream/crates/typed-store-derive" }
 
-signature-mpc={ git = "https://github.com/dwallet-labs/dwallet-network", package = "signature-mpc", rev="e6f3d23c7baa4680d3b004da9f6088bddce0ff95" }
-dwallet-json = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-json", rev="e6f3d23c7baa4680d3b004da9f6088bddce0ff95" }
-dwallet-json-rpc = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-json-rpc", rev="e6f3d23c7baa4680d3b004da9f6088bddce0ff95"}
-dwallet-json-rpc-types = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-json-rpc-types", rev="e6f3d23c7baa4680d3b004da9f6088bddce0ff95"}
-dwallet-open-rpc = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-open-rpc", rev="e6f3d23c7baa4680d3b004da9f6088bddce0ff95" }
-dwallet-protocol-config = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-protocol-config", rev="e6f3d23c7baa4680d3b004da9f6088bddce0ff95" }
-dwallet-rest-api = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-rest-api", rev="e6f3d23c7baa4680d3b004da9f6088bddce0ff95" }
-dwallet-sdk = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-sdk", rev="e6f3d23c7baa4680d3b004da9f6088bddce0ff95" }
-dwallet-transaction-builder = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-transaction-builder", rev="e6f3d23c7baa4680d3b004da9f6088bddce0ff95" }
-dwallet-types = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-types" , rev="e6f3d23c7baa4680d3b004da9f6088bddce0ff95"}
-dwallet-keys = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-keys",rev="e6f3d23c7baa4680d3b004da9f6088bddce0ff95" }
-dwallet-move-build = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-move-build", rev="e6f3d23c7baa4680d3b004da9f6088bddce0ff95"}
-dwallet-package-resolver = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-package-resolver", rev="e6f3d23c7baa4680d3b004da9f6088bddce0ff95" }
-dwallet-test-transaction-builder = { git = "https://github.com/dwallet-labs/dwallet-network", package="sui-test-transaction-builder", rev="e6f3d23c7baa4680d3b004da9f6088bddce0ff95"  }
-dwallet-move-core-types = { git = "https://github.com/dwallet-labs/dwallet-network", package = "move-core-types", rev="e6f3d23c7baa4680d3b004da9f6088bddce0ff95" }
-dwallet-config = { git = "https://github.com/dwallet-labs/dwallet-network", branch = "sign-ia-wasm", package = "sui-config" }
-dwallet-metrics = {git = "https://github.com/dwallet-labs/dwallet-network", branch = "sign-ia-wasm", package = "mysten-metrics"}
-dwallet-telemetry-subscribers = { git = "https://github.com/dwallet-labs/dwallet-network", branch = "sign-ia-wasm", package = "telemetry-subscribers" }
+signature-mpc={ git = "https://github.com/dwallet-labs/dwallet-network", package = "signature-mpc", rev="12736314d74f6d901dcd5364bfa870da90f20c52"}
+dwallet-json = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-json", rev="12736314d74f6d901dcd5364bfa870da90f20c52"}
+dwallet-json-rpc = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-json-rpc", rev="12736314d74f6d901dcd5364bfa870da90f20c52"}
+dwallet-json-rpc-types = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-json-rpc-types", rev="12736314d74f6d901dcd5364bfa870da90f20c52"}
+dwallet-open-rpc = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-open-rpc", rev="12736314d74f6d901dcd5364bfa870da90f20c52"}
+dwallet-protocol-config = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-protocol-config", rev="12736314d74f6d901dcd5364bfa870da90f20c52"}
+dwallet-rest-api = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-rest-api", rev="12736314d74f6d901dcd5364bfa870da90f20c52"}
+dwallet-sdk = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-sdk", rev="12736314d74f6d901dcd5364bfa870da90f20c52"}
+dwallet-transaction-builder = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-transaction-builder", rev="12736314d74f6d901dcd5364bfa870da90f20c52"}
+dwallet-types = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-types" , rev="12736314d74f6d901dcd5364bfa870da90f20c52"}
+dwallet-keys = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-keys",rev="12736314d74f6d901dcd5364bfa870da90f20c52"}
+dwallet-move-build = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-move-build", rev="12736314d74f6d901dcd5364bfa870da90f20c52"}
+dwallet-package-resolver = { git = "https://github.com/dwallet-labs/dwallet-network", package = "sui-package-resolver", rev="12736314d74f6d901dcd5364bfa870da90f20c52"}
+dwallet-test-transaction-builder = { git = "https://github.com/dwallet-labs/dwallet-network", package="sui-test-transaction-builder", rev="12736314d74f6d901dcd5364bfa870da90f20c52" }
+dwallet-move-core-types = { git = "https://github.com/dwallet-labs/dwallet-network", package = "move-core-types", rev="12736314d74f6d901dcd5364bfa870da90f20c52"}
+dwallet-config = { git = "https://github.com/dwallet-labs/dwallet-network", rev="12736314d74f6d901dcd5364bfa870da90f20c52", package = "sui-config" }
+dwallet-metrics = {git = "https://github.com/dwallet-labs/dwallet-network", rev="12736314d74f6d901dcd5364bfa870da90f20c52", package = "mysten-metrics"}
+dwallet-telemetry-subscribers = { git = "https://github.com/dwallet-labs/dwallet-network", rev="12736314d74f6d901dcd5364bfa870da90f20c52", package = "telemetry-subscribers" }
 fastcrypto = { git = "https://github.com/MystenLabs/fastcrypto", branch = "main" }
-shared-crypto = { git = "https://github.com/dwallet-labs/dwallet-network", package = "shared-crypto" ,rev="e6f3d23c7baa4680d3b004da9f6088bddce0ff95"}
+shared-crypto = { git = "https://github.com/dwallet-labs/dwallet-network", package = "shared-crypto" ,rev="12736314d74f6d901dcd5364bfa870da90f20c52"}
 
 
 anyhow = "1.0.75"
@@ -74,8 +74,8 @@ serde_json = "1.0.108"
 [dev-dependencies]
 rand = "0.8.5"
 
-sui-swarm-config = { git = "https://github.com/dwallet-labs/dwallet-network", branch = "sign-ia-wasm", package = "sui-swarm-config" }
-test-cluster = { git = "https://github.com/dwallet-labs/dwallet-network", branch = "sign-ia-wasm", package = "test-cluster" }
+sui-swarm-config = { git = "https://github.com/dwallet-labs/dwallet-network", rev="12736314d74f6d901dcd5364bfa870da90f20c52", package = "sui-swarm-config" }
+test-cluster = { git = "https://github.com/dwallet-labs/dwallet-network", rev="12736314d74f6d901dcd5364bfa870da90f20c52", package = "test-cluster" }
 
 [profile.release]
 panic = "abort"
