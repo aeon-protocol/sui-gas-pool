@@ -1,4 +1,4 @@
-FROM rust:1.78-bullseye  AS chef
+FROM rust:1.79-bullseye  AS chef
 WORKDIR sui
 ARG GIT_REVISION
 ENV GIT_REVISION=$GIT_REVISION
@@ -24,4 +24,6 @@ LABEL git-revision=$GIT_REVISION
 
 EXPOSE 9600
 ENV PORT 9600
+
+# 1.79-bullseye
 
