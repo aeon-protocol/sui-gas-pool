@@ -62,7 +62,7 @@ redis.call('SET', t_available_coin_count, new_coin_count)
 redis.call('INCR', t_next_reservation_id)
 local reservation_id = redis.call('GET', t_next_reservation_id)
 local concated_object_ids = table.concat(object_ids, ',')
-local key = sponsor_address .. ':' .. reservation_id
+local key = sponsor_address .. ':dwallet:' .. reservation_id
 redis.call('SET', key, concated_object_ids)
 redis.call('ZADD', t_expiration_queue, expiration_time, reservation_id)
 
