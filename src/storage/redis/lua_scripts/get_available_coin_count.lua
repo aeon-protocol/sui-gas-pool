@@ -6,7 +6,7 @@
 
 local sponsor_address = ARGV[1]
 
-local t_available_coin_count = sponsor_address .. ':available_coin_count'
+local t_available_coin_count = sponsor_address .. ':dwallet:available_coin_count'
 local count = redis.call('GET', t_available_coin_count)
 
 return count
