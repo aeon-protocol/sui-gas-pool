@@ -16,7 +16,7 @@ local elements = redis.call('ZRANGEBYSCORE', t_expiration_queue, 0, current_time
 local expired_reservations = {}
 if #elements > 0 then
     for _, reservation_id in ipairs(elements) do
-        local key = sponsor_address .. ':' .. reservation_id
+        local key = sponsor_address .. ':dwallet:' .. reservation_id
         local object_ids = redis.call('GET', key)
         if object_ids then
             redis.call('DEL', key)

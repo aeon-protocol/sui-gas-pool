@@ -13,7 +13,7 @@ local elements = redis.call('ZRANGE', t_expiration_queue, 0, -1)
 
 local total = 0
 for _, reservation_id in ipairs(elements) do
-    local key = sponsor_address .. ':' .. reservation_id
+    local key = sponsor_address .. ':dwallet:' .. reservation_id
     local object_ids = redis.call('GET', key)
     if object_ids then
         -- The object IDs are concatenated with commas. gsub will replace all commas with empty strings and
