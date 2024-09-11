@@ -7,6 +7,7 @@ use dwallet_gas_pool::command::Command;
 fn main() {
     let _guard = sentry::init(("https://1dd0fd2be29f39361bf956ece4336d25@o4507907608150016.ingest.de.sentry.io/4507929902841936", sentry::ClientOptions {
         release: sentry::release_name!(),
+        attach_stacktrace: true,
         ..Default::default()
       }));
 
