@@ -8,7 +8,8 @@ metrics-port: 9187
 gas-pool-config:
   redis:
     redis_url: "redis://127.0.0.1"
-fullnode-url: "https://fullnode.alpha.testnet.dwallet.cloud:443"
+fullnode-url: "http://127.0.0.1:9000"
+#  "https://fullnode.alpha.testnet.dwallet.cloud:443"
 coin-init-config:
   target-init-balance: 100000000
   refresh-interval-sec: 86400

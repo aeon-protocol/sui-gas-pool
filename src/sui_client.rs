@@ -36,6 +36,8 @@ impl SuiClient {
         // if let Some((username, password)) = basic_auth {
         //     sui_client_builder = sui_client_builder.basic_auth(username, password);
         // }
+
+        println!("Connecting to fullnode {:?}", fullnode_url);
         let sui_client = sui_client_builder.build(fullnode_url).await.unwrap();
         Self { sui_client }
     }

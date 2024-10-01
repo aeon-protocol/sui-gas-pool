@@ -2,13 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 
 use crate::tx_signer::{SidecarTxSigner, TestTxSigner, TxSigner};
+use fastcrypto::ed25519::Ed25519KeyPair;
+pub use fastcrypto::traits::KeyPair as KeypairTraits;
+use rand::rngs::StdRng;
 use serde::{Deserialize, Serialize};
 use serde_with::serde_as;
 use std::env;
 use std::net::Ipv4Addr;
 use std::sync::Arc;
 use sui_config::Config;
-use sui_types::crypto::{get_account_key_pair, EncodeDecodeBase64, SuiKeyPair};
+use sui_types::base_types::SuiAddress;
+use sui_types::crypto::{get_account_key_pair, get_key_pair, EncodeDecodeBase64, SuiKeyPair};
 use sui_types::gas_coin::MIST_PER_SUI;
 
 pub const DEFAULT_RPC_PORT: u16 = 9527;
