@@ -164,6 +164,7 @@ async fn reserve_gas(
     ))
     .await
     .unwrap_or_else(|err| {
+        sentry::capture_error(&err);
         error!("Failed to spawn reserve_gas task: {:?}", err);
         (
             StatusCode::INTERNAL_SERVER_ERROR,
@@ -198,6 +199,10 @@ async fn reserve_gas_impl(
             (StatusCode::OK, Json(response))
         }
         Err(err) => {
+            sentry::capture_message(
+                &format!("Failed to reserve gas: {:?}", err),
+                sentry::Level::Error,
+            );
             error!("Failed to reserve gas: {:?}", err);
             metrics.num_failed_reserve_gas_requests.inc();
             (
@@ -247,6 +252,7 @@ async fn execute_tx(
     ))
     .await
     .unwrap_or_else(|err| {
+        sentry::capture_error(&err);
         error!("Failed to spawn reserve_gas task: {:?}", err);
         (
             StatusCode::INTERNAL_SERVER_ERROR,
@@ -279,6 +285,10 @@ async fn execute_tx_impl(
             (StatusCode::OK, Json(ExecuteTxResponse::new_ok(response)))
         }
         Err(err) => {
+            sentry::capture_message(
+                &format!("Failed to execute transaction: {:?}", err),
+                sentry::Level::Error,
+            );
             error!("Failed to execute transaction: {:?}", err);
             metrics.num_failed_execute_tx_requests.inc();
             (
