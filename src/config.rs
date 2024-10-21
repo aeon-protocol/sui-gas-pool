@@ -58,7 +58,7 @@ impl Default for GasStationConfig {
             rpc_port: DEFAULT_RPC_PORT,
             metrics_port: DEFAULT_METRICS_PORT,
             gas_pool_config: GasPoolStorageConfig::default(),
-            fullnode_url: "http://localhost:9000".to_string(),
+            fullnode_url: "http://fullnode.alpha.devnet.dwallet.cloud:80".to_string(),//"http://localhost:9000".to_string(),
             fullnode_basic_auth: None,
             coin_init_config: Some(CoinInitConfig::default()),
             daily_gas_usage_cap: DEFAULT_DAILY_GAS_USAGE_CAP,

@@ -8,7 +8,7 @@ metrics-port: 9187
 gas-pool-config:
   redis:
     redis_url: "redis://127.0.0.1"
-fullnode-url: "http://127.0.0.1:9000"
+fullnode-url: "http://fullnode.alpha.devnet.dwallet.cloud:80" #"http://127.0.0.1:9000"
 #  "https://fullnode.alpha.testnet.dwallet.cloud:443"
 coin-init-config:
   target-init-balance: 100000000
