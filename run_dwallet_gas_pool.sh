@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Start haproxy in background
-haproxy -f /etc/haproxy/haproxy.cfg
+/usr/sbin/haproxy -f /etc/haproxy/haproxy.cfg
 
 # Start promtail in background
 /usr/local/bin/promtail -config.file=/etc/promtail/config.yml &
