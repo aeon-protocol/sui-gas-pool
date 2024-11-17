@@ -25,9 +25,10 @@ LABEL build-date=$BUILD_DATE
 LABEL git-revision=$GIT_REVISION
 
 # Download and install Promtail
-RUN curl -L -o /usr/local/bin/promtail.zip https://github.com/grafana/loki/releases/download/v2.8.0/promtail-linux-amd64.zip \
-    && unzip /usr/local/bin/promtail.zip -d /usr/local/bin/ \
-    && rm /usr/local/bin/promtail.zip \
+RUN curl -L -o /usr/local/bin/promtail-linux-amd64.zip https://github.com/grafana/loki/releases/download/v2.8.0/promtail-linux-amd64.zip \
+    && unzip -o /usr/local/bin/promtail-linux-amd64.zip -d /usr/local/bin/ \
+    && mv /usr/local/bin/promtail-linux-amd64 /usr/local/bin/promtail \
+    && rm /usr/local/bin/promtail-linux-amd64.zip \
     && chmod +x /usr/local/bin/promtail
 
 EXPOSE 8084
