@@ -6,7 +6,7 @@ on:
       services:
         description: "Comma-separated list of services to build (no spaces)"
         required: true
-        default: '["client-gen","dwallet-indexer"]'
+        default: '["sui-gas-pool"]'
       version:
         description: "Version number for the services (eg - v1/v2)"
         required: true
@@ -51,6 +51,6 @@ jobs:
         run: |
           SERVICE_NAME="${{ matrix.service }}"
           echo "Building and pushing $SERVICE_NAME with version ${{ inputs.version }}"
-          DOCKER_BUILDKIT=1 docker build --secret id=sentry_token,env=SENTRY_AUTH_TOKEN -t aeon/$SERVICE_NAME:${{ inputs.version }} -f docker/$SERVICE_NAME/Dockerfile .
+          DOCKER_BUILDKIT=1 docker build --secret id=sentry_token,env=SENTRY_AUTH_TOKEN -t aeon/$SERVICE_NAME:${{ inputs.version }} -f docker/Dockerfile .
           docker tag aeon/$SERVICE_NAME:${{ inputs.version }} 533267399827.dkr.ecr.eu-west-1.amazonaws.com/$SERVICE_NAME:${{ inputs.version }}
           docker push 533267399827.dkr.ecr.eu-west-1.amazonaws.com/$SERVICE_NAME:${{ inputs.version }}
