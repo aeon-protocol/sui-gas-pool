@@ -6,6 +6,6 @@ metrics-port: 9186
 gas-pool-config: redis
 fullnode-url: "https://fullnode.testnet.sui.io:443"
 coin-init-config:
-  target-init-balance: 1000000000
+  target-init-balance: 100000000
   refresh-interval-sec: 86400
 daily-gas-usage-cap: 1500000000000
