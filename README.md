@@ -125,7 +125,10 @@ implementations:
 1. KMS Sidecar: This allows us to manage private keys in a secure key management service such as AWS KMS. You will need
    to run a KMS sidecar that accepts signing requests through a JSON-RPC endpoint, that talks to AWS and signs
    transactions. We provided a [sample implementation](sample_kms_sidecar/) of such sidecar in the repo.
-2. In-memory: This allows the gas pool server to load a SuiKeyPair directly from file and use it to sign transactions.
+2. In-memory: This allows the gas pool server to load a [`SuiKeyPair`](https://github.com/MystenLabs/sui/blob/2873d7a2532343247d545d52bcd9d7ab138096bb/crates/sui-types/src/crypto.rs#L136) directly from file and use it to sign transactions. The config file expects a Base 64 encoded form of `SuiKeyPair`. You can obtain it using one the following ways:
+   - Using the `sui` binary to generate a new keypair by running `sui keytool generate ed25519`, and find the serialized keypair in the `<address>.key` file.
+   - If you have already imported your key to your local Sui client config, you can also find the keypair in `~/.sui/sui_config/sui.keystore`.
+   - More details of Sui key formats can be found in the [official document](https://docs.sui.io/references/cli/keytool).
 
 ## Binaries
 
@@ -150,7 +153,10 @@ The `tool` binary currently supports a few helper commands:
 Below describes the steps to deploy a gas pool service:
 
 1. Get a sponsor address keypair, either by generating it manually if you want to use in-memory signer, or get a KMS
-   instance from some cloud providers (or implement your own).
+   instance from some cloud providers (or implement your own). Note that the **gas pool must use a dedicated address**,
+   and
+   this address cannot be used for any other purpose. Otherwise transactions sent outside of the gas pool could mess up
+   the gas coin setup.
 2. Send a sufficiently funded SUI coin into that address. This will be the initial funding of the gas pool.
 3. Deploy a Redis instance.
 4. Create a YAML config file (see details below).
@@ -172,7 +178,7 @@ rpc-port: 9527
 metrics-port: 9184
 gas-pool-config:
   redis:
-    redis_url: "redis:://127.0.0.1"
+    redis_url: "redis://127.0.0.1"
 fullnode-url: "http://localhost:9000"
 coin-init-config:
   target-init-balance: 100000000

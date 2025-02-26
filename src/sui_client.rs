@@ -7,13 +7,15 @@ use futures_util::stream::FuturesUnordered;
 use futures_util::StreamExt;
 use itertools::Itertools;
 use std::collections::HashMap;
+use std::time::Duration;
+use sui_json_rpc_types::SuiTransactionBlockEffectsAPI;
 use sui_json_rpc_types::{
     SuiData, SuiObjectDataOptions, SuiObjectResponse, SuiTransactionBlockEffects,
     SuiTransactionBlockResponseOptions,
 };
 use sui_json_rpc_types::{SuiTransactionBlockEffectsAPI, SuiTransactionBlockResponse};
 use sui_sdk::SuiClientBuilder;
-use sui_types::base_types::{ObjectID, SuiAddress};
+use sui_types::base_types::{ObjectID, ObjectRef, SuiAddress};
 use sui_types::coin::{PAY_MODULE_NAME, PAY_SPLIT_N_FUNC_NAME};
 use sui_types::gas_coin::GAS;
 use sui_types::programmable_transaction_builder::ProgrammableTransactionBuilder;
@@ -55,7 +57,7 @@ impl SuiClient {
             let page = retry_forever!(async {
                 self.sui_client
                     .coin_read_api()
-                    .get_coins(address, None, cursor, None)
+                    .get_coins(address, None, cursor.clone(), None)
                     .await
                     .tap_err(|err| debug!("Failed to get owned gas coins: {:?}", err))
             })
@@ -225,6 +227,26 @@ impl SuiClient {
         );
         debug!(?digest, "Transaction execution response: {:?}", response);
         response
+    }
+
+    /// Wait for a known valid object version to be available on the fullnode.
+    pub async fn wait_for_object(&self, obj_ref: ObjectRef) {
+        loop {
+            let response = self
+                .sui_client
+                .read_api()
+                .get_object_with_options(obj_ref.0, SuiObjectDataOptions::default())
+                .await;
+            if let Ok(SuiObjectResponse {
+                data: Some(data), ..
+            }) = response
+            {
+                if data.version == obj_ref.1 {
+                    break;
+                }
+            }
+            tokio::time::sleep(Duration::from_millis(200)).await;
+        }
     }
 
     fn try_get_sui_coin_balance(object: &SuiObjectResponse) -> Option<GasCoin> {

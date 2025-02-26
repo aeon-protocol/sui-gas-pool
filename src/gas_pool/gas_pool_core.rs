@@ -66,12 +66,15 @@ impl GasPool {
         gas_budget: u64,
         duration: Duration,
     ) -> anyhow::Result<(SuiAddress, ReservationID, Vec<ObjectRef>)> {
+        let cur_time = std::time::Instant::now();
         self.gas_usage_cap.check_usage().await?;
         let sponsor = self.signer.get_address();
         let (reservation_id, gas_coins) = self
             .gas_pool_store
             .reserve_gas_coins(gas_budget, duration.as_millis() as u64)
             .await?;
+        let elapsed = cur_time.elapsed().as_millis();
+        self.metrics.reserve_gas_latency_ms.observe(elapsed as u64);
         self.metrics
             .reserved_gas_coin_count_per_request
             .observe(gas_coins.len() as u64);
@@ -114,7 +117,13 @@ impl GasPool {
         // We first query the total balance prior to transaction execution, then execute the
         // transaction, and finally derive the new gas coin balance using the gas usage from effects.
         let total_gas_coin_balance = self.get_total_gas_coin_balance(payment.clone()).await;
-        let response = self.execute_transaction_impl(tx_data, user_sig).await;
+        debug!(
+            ?reservation_id,
+            "Total gas coin balance prior to execution: {}", total_gas_coin_balance,
+        );
+        let response = self
+            .execute_transaction_impl(reservation_id, tx_data, user_sig)
+            .await;
         let updated_coins = match &response {
             Ok(response) => {
                 let new_gas_coin = response
@@ -133,12 +142,11 @@ impl GasPool {
                         .net_gas_usage();
                 debug!(
                     ?reservation_id,
-                    "Total gas coin balance prior to execution: {}, new balance: {}",
-                    total_gas_coin_balance,
-                    new_balance
+                    "New gas coin balance after execution: {}", new_balance,
                 );
                 #[cfg(test)]
                 {
+                    self.sui_client.wait_for_object(new_gas_coin).await;
                     assert_eq!(
                         self.get_total_gas_coin_balance(payment).await,
                         new_balance as u64
@@ -184,10 +192,12 @@ impl GasPool {
 
     async fn execute_transaction_impl(
         &self,
+        reservation_id: ReservationID,
         tx_data: TransactionData,
         user_sig: GenericSignature,
     ) -> anyhow::Result<SuiTransactionBlockResponse> {
         let sponsor = tx_data.gas_data().owner;
+        let cur_time = std::time::Instant::now();
         let sponsor_sig = retry_with_max_attempts!(
             async {
                 self.signer.sign_transaction(&tx_data).await.tap_err(|err| {
@@ -200,9 +210,16 @@ impl GasPool {
             },
             3
         )?;
+        let elapsed = cur_time.elapsed().as_millis();
+        self.metrics
+            .transaction_signing_latency_ms
+            .observe(elapsed as u64);
+        debug!(?reservation_id, "Transaction signed by sponsor");
+
         let tx = Transaction::from_generic_sig_data(tx_data, vec![sponsor_sig, user_sig]);
         let cur_time = std::time::Instant::now();
-        let response = self.sui_client.execute_transaction(tx, 3).await?;
+        let effects = self.sui_client.execute_transaction(tx, 3).await?;
+        debug!(?reservation_id, "Transaction executed");
         let elapsed = cur_time.elapsed().as_millis();
         self.metrics
             .transaction_execution_latency_ms
