@@ -104,14 +104,21 @@ impl TxSignerConfig {
         //     .encode_base64()
         // );
         match self {
-            TxSignerConfig::Local => TestTxSigner::new(
-                SuiKeyPair::decode(
-                    &env::var("SECRET_KEY_GAS")
-                        .expect("SECRET_KEY_GAS not defined")
-                        .to_string(),
+            TxSignerConfig::Local => {
+                let _ = dotenvy::from_filename(".env");
+                TestTxSigner::new(
+                    SuiKeyPair::decode(&{
+                        let key = env::var("SECRET_KEY_GAS")
+                            .expect("SECRET_KEY_GAS not defined. In dev, did you create .env file?")
+                            .to_string();
+                        if key.is_empty() {
+                            panic!("SECRET_KEY_GAS is defined but is an empty string");
+                        }
+                        key
+                    })
+                    .unwrap(),
                 )
-                .unwrap(),
-            ),
+            }
             TxSignerConfig::Sidecar { sidecar_url } => SidecarTxSigner::new(sidecar_url).await,
         }
     }

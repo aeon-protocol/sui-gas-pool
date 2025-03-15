@@ -4,9 +4,10 @@
 use clap::*;
 use std::path::PathBuf;
 use sui_config::Config;
-use sui_gas_pool::benchmarks::BenchmarkMode;
-use sui_gas_pool::config::{GasPoolStorageConfig, GasStationConfig, TxSignerConfig};
-use sui_gas_pool::rpc::client::GasPoolRpcClient;
+use sui_gas_station::benchmarks::kms_stress::run_kms_stress_test;
+use sui_gas_station::benchmarks::BenchmarkMode;
+use sui_gas_station::config::{GasPoolStorageConfig, GasStationConfig, TxSignerConfig};
+use sui_gas_station::rpc::client::GasPoolRpcClient;
 use sui_types::crypto::get_account_key_pair;
 
 #[derive(Parser)]
@@ -36,6 +37,17 @@ pub enum ToolCommand {
         num_clients: u64,
         #[arg(long, help = "Benchmark mode.", default_value = "reserve-only")]
         benchmark_mode: BenchmarkMode,
+    },
+    #[clap(name = "stress-kms")]
+    StressKMS {
+        #[arg(long, help = "Full URL to the KMS signer")]
+        kms_url: String,
+        #[arg(
+            long,
+            default_value_t = 300,
+            help = "Number of tasks to spawn to send requests to servers."
+        )]
+        num_tasks: usize,
     },
     /// Generate a sample config file and put it in the specified path.
     #[clap(name = "generate-sample-config")]
@@ -88,6 +100,9 @@ impl ToolCommand {
                     .run_benchmark(gas_station_url, reserve_duration_sec, num_clients)
                     .await
             }
+            ToolCommand::StressKMS { kms_url, num_tasks } => {
+                run_kms_stress_test(kms_url, num_tasks).await;
+            }
             ToolCommand::GenerateSampleConfig {
                 config_path,
                 with_sidecar_signer,
@@ -101,7 +116,13 @@ impl ToolCommand {
                 };
                 let config = GasStationConfig {
                     signer_config,
+<<<<<<< HEAD
                     gas_pool_config: GasPoolStorageConfig::Redis,
+=======
+                    gas_pool_config: GasPoolStorageConfig::Redis {
+                        redis_url: "redis://127.0.0.1".to_string(),
+                    },
+>>>>>>> d4a9182e92172b6204223377163e0cde895a1748
                     ..Default::default()
                 };
                 config.save(config_path).unwrap();
