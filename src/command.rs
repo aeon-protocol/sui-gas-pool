@@ -9,6 +9,7 @@ use crate::rpc::GasPoolServer;
 use crate::storage::connect_storage;
 use crate::sui_client::SuiClient;
 use clap::*;
+use std::env;
 use std::net::{IpAddr, SocketAddr};
 use std::path::PathBuf;
 use sui_config::Config;
@@ -33,7 +34,6 @@ impl Command {
         let GasStationConfig {
             signer_config,
             gas_pool_config,
-            fullnode_url,
             fullnode_basic_auth,
             rpc_host_ip,
             rpc_port,
@@ -41,6 +41,8 @@ impl Command {
             coin_init_config,
             daily_gas_usage_cap,
         } = config;
+
+        let fullnode_url = env::var("SUI_FULLNODE_URL").unwrap();
 
         let metric_address = SocketAddr::new(IpAddr::V4(rpc_host_ip), metrics_port);
         let registry_service = mysten_metrics::start_prometheus_server(metric_address);

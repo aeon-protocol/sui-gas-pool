@@ -198,6 +198,7 @@ impl GasPool {
     ) -> anyhow::Result<SuiTransactionBlockResponse> {
         let sponsor = tx_data.gas_data().owner;
         let cur_time = std::time::Instant::now();
+        debug!(?reservation_id, "Signing transaction");
         let sponsor_sig = retry_with_max_attempts!(
             async {
                 self.signer.sign_transaction(&tx_data).await.tap_err(|err| {
