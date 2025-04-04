@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Re-export sui_fullnode_url to ensure it's available to all subprocesses
+export SUI_FULLNODE_URL
+
 # Start haproxy in background
 /usr/sbin/haproxy -f /etc/haproxy/haproxy.cfg
 
